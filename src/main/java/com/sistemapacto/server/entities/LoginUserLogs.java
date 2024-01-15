@@ -1,15 +1,13 @@
 package com.sistemapacto.server.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,10 +16,9 @@ import java.util.UUID;
 @Entity(name = "login_user_logs")
 public class LoginUserLogs {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "login_id", updatable = false, nullable = false)
-    private UUID loginId;
+    private Long loginId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -29,5 +26,10 @@ public class LoginUserLogs {
     private UserEntity userEntity;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
+
+    public LoginUserLogs(UserEntity userEntity, LocalDateTime updatedAt) {
+        this.userEntity = userEntity;
+        this.updatedAt = updatedAt;
+    }
 }

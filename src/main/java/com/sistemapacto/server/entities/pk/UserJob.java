@@ -3,15 +3,14 @@ package com.sistemapacto.server.entities.pk;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistemapacto.server.entities.JobEntity;
 import com.sistemapacto.server.entities.UserEntity;
-import jakarta.persistence.*;
+import com.sistemapacto.server.enums.ApplicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -22,19 +21,15 @@ import java.util.UUID;
 public class UserJob {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_job_id", updatable = false, nullable = false)
-    private UUID userJobId;
+    private Long userJobId;
 
     @Column(name = "application_status")
-    private String applicationStatus;
-
-    @Column(name = "certification")
-    private String certifications;
+    private ApplicationStatus applicationStatus;
 
     @Column(name = "application_date")
-    private LocalDate applicationDate;
+    private LocalDateTime applicationDate;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

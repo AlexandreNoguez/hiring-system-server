@@ -2,28 +2,30 @@ package com.sistemapacto.server.entities;
 
 import com.sistemapacto.server.entities.pk.SkillUser;
 import com.sistemapacto.server.entities.pk.UserJob;
-import jakarta.persistence.*;
+import com.sistemapacto.server.entities.pk.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Set;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", updatable = false, nullable = false)
-    private UUID userId;
+    private Long userId;
 
     @Column(name = "user_login")
     private String userLogin;
@@ -34,11 +36,11 @@ public class UserEntity {
     @Column(name = "user_email")
     private String userEmail;
 
-    @Column(name = "user_role")
-    private String userRole;
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserRole> userRole;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UpdateUserLogs> updateUserLogs;
@@ -51,4 +53,47 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UserJob> userJobs;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return userRole
+                .stream()
+                .map(UserRole::getRoleEntity)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getPassword() {
+        return userPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return userEmail;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+//    @Override
+//    public Long getUserId() {
+//        return userId;
+//    }
 }

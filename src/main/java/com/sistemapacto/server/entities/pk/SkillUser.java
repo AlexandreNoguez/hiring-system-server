@@ -1,25 +1,15 @@
 package com.sistemapacto.server.entities.pk;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sistemapacto.server.entities.SkillEntity;
 import com.sistemapacto.server.entities.UserEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sistemapacto.server.entities.SkillEntity;
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -29,28 +19,27 @@ import org.hibernate.annotations.GenericGenerator;
 public class SkillUser {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "skill_user_id", updatable = false, nullable = false)
-    private UUID skillUserId;
+    private Long skillUserId;
 
 //    @Column(name = "user_id")
-//    private UUID userId;
+//    private Long userId;
 
     @Column(name = "experience_level")
     private String experience;
 
     @Column(name = "last_used_date")
-    private LocalDate lastUsed;
+    private LocalDateTime lastUsed;
 
     @Column(name = "certification")
     private String description;
 
-    @Column(name = "created_at")
-    private LocalDate createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
+//    @Column(name = "created_at")
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at")
+//    private LocalDateTime updatedAt;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
@@ -58,7 +47,7 @@ public class SkillUser {
     private SkillEntity skillEntity;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

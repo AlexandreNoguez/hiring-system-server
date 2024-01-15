@@ -1,16 +1,14 @@
 package com.sistemapacto.server.entities;
 
 import com.sistemapacto.server.entities.pk.UserJob;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,10 +18,9 @@ import java.util.UUID;
 public class JobEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id", updatable = false, nullable = false)
-    private UUID jobId;
+    private Long jobId;
 
     @Column(name = "job_title")
     private String title;
@@ -38,10 +35,10 @@ public class JobEntity {
     private String status;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "jobEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UserJob> userJobs;

@@ -1,16 +1,14 @@
 package com.sistemapacto.server.entities;
 
 import com.sistemapacto.server.entities.pk.UserRole;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -19,10 +17,9 @@ import java.util.UUID;
 @Entity(name = "roles")
 public class RoleEntity implements GrantedAuthority {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", updatable = false, nullable = false)
-    private UUID roleId;
+    private Long roleId;
 
     @Column(name = "role_name")
     private String roleName;

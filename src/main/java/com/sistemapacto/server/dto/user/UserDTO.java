@@ -1,26 +1,26 @@
 package com.sistemapacto.server.dto.user;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.sistemapacto.server.dto.skill.SkillDTO;
+import com.sistemapacto.server.dto.userrole.UserRoleDTO;
+import com.sistemapacto.server.entities.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UserDTO {
-    @Schema(description = "Login do usuário", example = "Alexandre.Noguez")
-    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
+    private Long userId;
     private String userLogin;
-
-    @Schema(description = "Senha do usuário", example = "12365185436")
-    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
-    private String userPassword;
-
-    @Schema(description = "Email do usuário", example = "alexandrenoguez@email.com")
-    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
     private String userEmail;
-
-    @Schema(description = "Cargo do usuário", example = "Recrutador ou Candidato")
-    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
-    private String userRole;
-
+    private Set<UserRoleDTO> userRole;
+    private Set<SkillDTO> skills;
+    public UserDTO(UserEntity userEntity) {
+        BeanUtils.copyProperties(userEntity, this);
+    }
 
 }
