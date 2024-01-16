@@ -30,14 +30,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JobService {
     private final JobRepository jobRepository;
-//    private final UserJobRepository userJobRepository;
     private final UserService userService;
+    private final NotificationService notificationService;
     private final ModelMapper modelMapper;
 
     private final ZoneId ZONE_BRAZIL = ZoneId.of("America/Sao_Paulo");
 
-    public JobDTO createNewJob(JobCreateDTO jobCreateDTO) {
+    public JobDTO createNewJob(JobCreateDTO jobCreateDTO) throws BusinessException {
         JobEntity jobEntity = jobConverterEntity(jobCreateDTO);
+
+        UserEntity recuiter = userService.getUserById(userService.getLoggedUser().getUserId());
+
+        jobEntity.setUserRecruiterEmail(recuiter.getUserEmail());
 
         jobEntity.setCreatedAt(ZonedDateTime.now(ZONE_BRAZIL).toLocalDateTime());
 
@@ -46,7 +50,7 @@ public class JobService {
     }
 
     public PaginationDTO<JobDTO> getAllJobs(
-            Integer jobId,
+            Long jobId,
             String title,
             String description,
             String requirements,

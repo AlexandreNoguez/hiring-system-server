@@ -26,13 +26,13 @@ public class JobController {
     private final JobService jobService;
     @PostMapping("/register")
     public ResponseEntity<JobDTO> createNewJob(@Valid @RequestBody JobCreateDTO jobCreateDTO)
-            throws BusinessException, IOException {
+            throws BusinessException {
         return new ResponseEntity<>(jobService.createNewJob(jobCreateDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAllByParams")
     public ResponseEntity<PaginationDTO<JobDTO>> getAllJobs(
-            @RequestParam(required = false) Integer jobId,
+            @RequestParam(required = false) Long jobId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String description,
             @RequestParam(required = false) String requirements,
@@ -54,25 +54,9 @@ public class JobController {
     @PatchMapping("/application/{jobId}")
     public ResponseEntity<JobUserDTO> userApplication(
             @PathVariable Long jobId
-//            @RequestBody JobUserCreateDTO jobUserCreateDTO
     ) throws BusinessException {
         JobUserDTO application = jobService.candidateApplication(jobId);
         return new ResponseEntity<>(application, HttpStatus.OK);
     }
-//
-//    @PutMapping("/{skillId}")
-//    public ResponseEntity<SkillDTO> updateSkill(
-//            @PathVariable Long skillId,
-//            @RequestBody SkillCreateDTO updatedSkillDTO) throws BusinessException, IOException {
-//        SkillDTO updatedSkill = skillService.updateSkill(skillId, updatedSkillDTO);
-//        return new ResponseEntity<>(updatedSkill, HttpStatus.OK);
-//
-//    }
-//
-//    @DeleteMapping("/{skillId}")
-//    public ResponseEntity<Void> deleteSkill(@PathVariable Long skillId) throws BusinessException {
-//        skillService.deleteSkill(skillId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//
-//    }
+
 }

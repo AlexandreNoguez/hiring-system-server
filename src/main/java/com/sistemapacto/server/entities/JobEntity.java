@@ -40,6 +40,9 @@ public class JobEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "recruiter_email")
+    private String userRecruiterEmail;
+
     @OneToMany(mappedBy = "jobEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UserJob> userJobs;
 
