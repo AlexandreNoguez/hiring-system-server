@@ -10,23 +10,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
-    @Query( "SELECT distinct func " +
-            " FROM jobs func " +
-            " inner join func.userJobs fcar " +
-            " WHERE (:jobId is null or func.jobId = :jobId)" +
-            " AND (:title is null or func.title LIKE concat('%', :title, '%')) " +
-            " AND (:description is null or UPPER(func.description) LIKE UPPER(concat('%',:description, '%'))) " +
-            " AND (:requirements is null or :requirements = func.requirements)" +
-            " AND (:status is null or :status = fcar.applicationStatus ) " +
+    @Query( "SELECT distinct jb " +
+            " FROM jobs jb " +
+            " WHERE (:jobId is null or jb.jobId = :jobId)" +
+            " AND (:title is null or UPPER(jb.title) LIKE UPPER(concat('%', :title, '%'))) " +
+            " AND (:description is null or UPPER(jb.description) LIKE UPPER(concat('%',:description, '%'))) " +
+            " AND (:requirements is null or UPPER(jb.requirements) LIKE UPPER(concat('%',:requirements, '%'))) " +
+            " AND (:status is null or UPPER(jb.status) LIKE UPPER(concat('%', :status, '%'))) " +
             "")
-//    (cast(:userId as org.hibernate.type.UUIDCharType)
     Page<JobEntity> getAllJobs(
-           Integer jobId,
-           String title,
-           String description,
-           String requirements,
-           String status,
-           PageRequest pageRequest
+            Long jobId,
+            String title,
+            String description,
+            String requirements,
+            String status,
+            PageRequest pageRequest
     );
 
 
