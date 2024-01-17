@@ -30,6 +30,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "user_login")
     private String userLogin;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "user_password")
     private String userPassword;
 

@@ -18,11 +18,15 @@ public class UserCreateDTO {
     @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
     private String userLogin;
 
+    @Schema(description = "Nome do usuário", example = "Alexandre Noguez")
+    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
+    private String userName;
+
     @Schema(description = "Senha do usuário", example = "123aCB!!!")
     @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
     private String userPassword;
 
-    @Schema(description = "Senha do usuário", example = "123aCB!!!")
+    @Schema(description = "Senha do usuário repetida", example = "123aCB!!!")
     @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
     private String matchUserPassword;
 
@@ -33,6 +37,6 @@ public class UserCreateDTO {
     @Schema(description = "Cargo do usuário")
     private Set<UserRoleCreateDTO> roles;
 
-    @Schema(description = "Cargo do usuário")
+    @Schema(description = "Habilidades do usuário")
     private Set<SkillUserCreateDTO> skills;
 }

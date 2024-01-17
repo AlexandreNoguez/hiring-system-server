@@ -15,7 +15,6 @@ import com.sistemapacto.server.repositories.SkillRepository;
 import com.sistemapacto.server.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,7 +77,6 @@ public class UserService {
 
 
         userEntity.setUserPassword(encryptPassword);
-//        usuarioEntity.setSituacao(Situacao.ATIVO);
 
         userCreateDTO.getRoles().stream()
                 .map(roleEntity -> {
@@ -97,32 +95,26 @@ public class UserService {
                 })
                 .collect(Collectors.toSet());
 
-        // Obtém todas as habilidades do banco de dados
         var skillsDb = skillRepository.findAll();
 
-// Mapeia as habilidades do userCreateDTO para SkillUser
         Set<SkillUser> skillsEntity = userCreateDTO.getSkills().stream()
                 .map(skillDTO -> {
-                    // Encontre a habilidade correspondente no banco de dados
                     SkillEntity skillFromDb = skillsDb.stream()
                             .filter(skill -> skill.getSkillId().equals(skillDTO.getSkillId()))
                             .findFirst()
                             .orElse(null);
 
-                    // Verifica se a habilidade foi encontrada no banco de dados
                     if (skillFromDb != null) {
-                        // Cria a entidade SkillUser e faz a associação com o UserEntity
                         SkillUser skillEntity = new SkillUser();
                         skillEntity.setSkillEntity(skillFromDb);
                         skillEntity.setUserEntity(userEntity);
+                        skillEntity.setExperience(skillDTO.getExperience());
+                        skillEntity.setLastUsed(skillDTO.getLastUsed());
                         return skillEntity;
                     } else {
-                        // Lida com a situação em que a habilidade não foi encontrada
-                        // Pode lançar uma exceção, registrar um erro, etc., dependendo do seu caso
                         return null;
                     }
                 })
-                // Filtra as habilidades que foram encontradas com sucesso
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
@@ -144,13 +136,6 @@ public class UserService {
         Set<SkillDTO> skills = userEntity.getSkills().stream()
                 .map(this::convertSkillDTO)
                 .collect(Collectors.toSet());
-
-//        UserDTO userDetails = new UserDTO();
-//        userDetails.setUserId(userEntity.getUserId());
-//        userDetails.setUserLogin(userEntity.getUserLogin());
-//        userDetails.setUserEmail(userEntity.getUserEmail());
-//        userDetails.setUserRole(roles);
-//        userDetails.setSkills(skills);
 
         return new UserDTO(userEntity.getUserId(),
                 userEntity.getUserLogin(),

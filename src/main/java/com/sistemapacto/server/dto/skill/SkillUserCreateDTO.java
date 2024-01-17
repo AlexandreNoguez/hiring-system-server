@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +15,12 @@ public class SkillUserCreateDTO {
     @Schema(description = "Id da habilidade")
     @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
     private Long skillId;
+
+    @Schema(description = "Experiência do usuário com a habilidade.")
+    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
+    private String experience;
+
+    @Schema(description = "Último contato com a habilidade.")
+    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
+    private LocalDateTime lastUsed;
 }
