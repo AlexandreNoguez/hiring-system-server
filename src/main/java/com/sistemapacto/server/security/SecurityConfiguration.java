@@ -32,12 +32,17 @@ public class SecurityConfiguration {
                         authz
                                 .antMatchers("/", "/api/auth/signIn").permitAll()
                                 .antMatchers("/api/user/register").permitAll()
-                                .antMatchers(HttpMethod.GET, "/api/job/getAllByParams", "/api/job/getById").hasAnyRole("ROLE_CANDIDATE", "ROLE_RECRUITER")
-//                                .antMatchers(HttpMethod.GET, "/api/job/getById").hasAnyRole("ROLE_CANDIDATE", "ROLE_RECRUITER")
-                                .antMatchers(HttpMethod.POST, "/api/job/register").hasRole("ROLE_RECRUITER")
-                                .antMatchers(HttpMethod.PATCH, "/api/job/application").hasAnyRole("ROLE_CANDIDATE", "ROLE_RECRUITER")
-                                .antMatchers("/api/skill/**").hasRole("ROLE_ADMIN")
-                                .antMatchers("/api/job/register").hasRole("ROLE_RECRUITER")
+                                .antMatchers(HttpMethod.GET, "/api/job/getAllByParams").permitAll()
+                                .antMatchers(HttpMethod.PATCH, "/api/job/application").permitAll()
+                                .antMatchers(HttpMethod.GET, "/api/skill/**").permitAll()
+
+//                                 Casos de uso que pensei em implementar mas para testes e experimentação deixei comentado
+
+//                                .antMatchers(HttpMethod.POST, "/api/job/register").hasRole("ROLE_RECRUITER")
+//                                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ROLE_ADMIN")
+//                                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ROLE_ADMIN")
+//                                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ROLE_ADMIN")
+//                                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
@@ -59,6 +64,7 @@ public class SecurityConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+//                Para fins de teste deixei o cors aberto para todos hosts
                 registry.addMapping("/**")
                         .allowedMethods("*")
                         .exposedHeaders("Authorization");
