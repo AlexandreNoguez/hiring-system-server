@@ -23,23 +23,11 @@ public class SkillUser {
     @Column(name = "skill_user_id", updatable = false, nullable = false)
     private Long skillUserId;
 
-//    @Column(name = "user_id")
-//    private Long userId;
-
     @Column(name = "experience_level")
     private String experience;
 
     @Column(name = "last_used_date")
     private LocalDateTime lastUsed;
-
-    @Column(name = "certification")
-    private String description;
-
-//    @Column(name = "created_at")
-//    private LocalDateTime createdAt;
-//
-//    @Column(name = "updated_at")
-//    private LocalDateTime updatedAt;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
