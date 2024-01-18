@@ -2,9 +2,9 @@ package com.sistemapacto.server.services;
 
 import com.sistemapacto.server.dto.job.JobCreateDTO;
 import com.sistemapacto.server.dto.job.JobDTO;
-import com.sistemapacto.server.dto.jobuser.JobUserCreateDTO;
 import com.sistemapacto.server.dto.jobuser.JobUserDTO;
 import com.sistemapacto.server.dto.pagination.PaginationDTO;
+import com.sistemapacto.server.dto.user.UserDTO;
 import com.sistemapacto.server.entities.JobEntity;
 import com.sistemapacto.server.entities.UserEntity;
 import com.sistemapacto.server.entities.pk.UserJob;
@@ -111,14 +111,13 @@ public class JobService {
 
         userJob.setApplicationDate(LocalDateTime.now());
 
+        UserDTO recruiter = userService.findByUserEmail(jobEntity.getUserRecruiterEmail());
+
+        notificationService.sendApplicationNotification(modelMapper.map(userEntity, UserDTO.class), recruiter, modelMapper.map(jobEntity, JobDTO.class));
         jobRepository.save(jobEntity);
 
         return modelMapper.map(userJob, JobUserDTO.class);
     }
-
-
-
-
 
     private JobDTO jobConvertDTO(JobEntity jobEntity) {
         return modelMapper.map(jobEntity, JobDTO.class);
