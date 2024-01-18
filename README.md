@@ -25,8 +25,15 @@
 * Execute o cliente com o comando `npm run dev`.
 
 ## Funcionalidades:
-* Cadastro e gerenciamento de Usuários com permissão administadora e candidatos (podendo criar outros cargos se necessário)
+* Cadastro e gerenciamento de Usuários com permissão administadora, recritadora e candidatos (podendo criar outros cargos se necessário)
 * Cadastro e gerenciamento de Vagas na empresa
+
+## Novas funcionalidades pra uma próxima versão
+- na hora de escolher habilidades, colocar um botão para excluir da lista
+- pelo front, fazer com que o ADMIN consiga editar e deletar habilidades
+- permitir que o recrutador consiga editar e deletar vagas
+- criar novos auth guards para rotas de criar habilidades e cadastrar vagas
+- criar readme em inglês
 
 ## Notas:
 * Certifique-se de seguir as instruções para que a aplicação rode normalmente.
