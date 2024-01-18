@@ -1,5 +1,6 @@
 package com.sistemapacto.server.controllers;
 
+import com.sistemapacto.server.controllers.doc.AuthDoc;
 import com.sistemapacto.server.dto.login.LoginDTO;
 import com.sistemapacto.server.exceptions.BusinessException;
 import com.sistemapacto.server.services.AuthService;
@@ -18,12 +19,12 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthDoc {
     private final AuthService authService;
 
     @PostMapping("/signIn")
     public String authenticate(@RequestBody @Valid LoginDTO loginDTO) throws BusinessException {
-        log.info("Verificando autenticação . . .");
+        log.info("Verificando autenticação - authenticate() . . .");
         return (authService.authenticate(loginDTO));
     }
 }
