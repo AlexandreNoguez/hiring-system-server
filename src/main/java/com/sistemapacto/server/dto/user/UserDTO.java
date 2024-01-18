@@ -16,6 +16,7 @@ import java.util.Set;
 public class UserDTO {
     private Long userId;
     private String userLogin;
+    private String userName;
     private String userEmail;
     private Set<UserRoleDTO> userRole;
     private Set<SkillDTO> skills;
