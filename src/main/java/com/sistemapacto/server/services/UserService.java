@@ -138,6 +138,7 @@ public class UserService {
                 .collect(Collectors.toSet());
 
         return new UserDTO(userEntity.getUserId(),
+                userEntity.getUsername(),
                 userEntity.getUserLogin(),
                 userEntity.getUserEmail(),
                 roles,
@@ -180,6 +181,13 @@ public class UserService {
             return Optional.empty();
         }
         return userRepository.findByUserLogin(login);
+    }
+
+    public UserDTO findByUserEmail(String email) throws BusinessException {
+        UserEntity userEntity = userRepository.findByUserEmail(email).orElseThrow(() ->
+                new BusinessException("Usuário não encontrado"));
+
+        return modelMapper.map(userEntity, UserDTO.class);
     }
 
     public Long getIdLoggerdUser() throws BusinessException {
