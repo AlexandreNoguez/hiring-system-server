@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
@@ -31,7 +32,8 @@ public class UserCreateDTO {
     private String matchUserPassword;
 
     @Schema(description = "Email do usuário", example = "alexandrenoguez@email.com")
-    @NotBlank(message = "Campo obrigatório, verifique e tente novamente.")
+    @NotBlank(message = "Deve ser um formato de e-mail válido.")
+    //    @Email manterei comentado para fins de teste com qualquer email
     private String userEmail;
 
     @Schema(description = "Cargo do usuário")
